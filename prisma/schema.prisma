@@ -1,6 +1,7 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL")
+   provider = "postgresql"
+  url  	= env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 model User {
   id    Int     @id @default(autoincrement())
@@ -15,8 +16,21 @@ model books {
    qty      Int 
   isbn     String
   price   Int
- 
-  
+}
+model author {
+  id       Int     @id @default(autoincrement())
+  authorname String
+ }
+model customer {
+  id       Int     @id @default(autoincrement())
+ customername String
+ customeremail String
+}
+model orderdetails {
+  id   Int     @id @default(autoincrement())
+  bookid Int
+  customerid Int
+   qty      Int 
 }
 generator client {
   provider = "prisma-client-js"

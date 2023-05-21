@@ -13,11 +13,11 @@ export const prisma = new PrismaClient({
   switch (method) {
     case 'GET':
       try {
-        const book = await prisma.books.findUnique({ where: { id: Number(id) } })
-        if (book) {
-          res.status(200).json(book)
+        const customer = await prisma.customer.findUnique({ where: { id: Number(id) } })
+        if (customer) {
+          res.status(200).json(customer)
         } else {
-          res.status(404).json({ message: 'Book not found' })
+          res.status(404).json({ message: 'Customer not found' })
         }
       } catch (error) {
         console.error(error)
@@ -29,24 +29,20 @@ export const prisma = new PrismaClient({
     case 'PUT':
       try {
         const body=JSON.parse(req.body)
-         const { bookname, author, booktype, price, qty, isbn } = body
+         const { customername,customeremail } = body
        
-        if (!bookname || !author || !booktype || !price || !qty || !isbn) {
+        if (!customername || !customeremail ) {
            res.status(400).json({ message: 'Missing required fields' })
          } else {
-          const updatedBook = await prisma.books.update({
+          const updatedCustomer = await prisma.customer.update({
             where: { id: Number(id) },
             data: {
-              bookname,
-              author,
-              booktype,
-              price,
-              qty,
-              isbn
+             customername,
+             customeremail
             }
           })
-          res.status(200).json(updatedBook)
-
+          res.status(200).json(updatedCustomer)
+  
        }
       } catch (error) {
         console.error(error)
@@ -55,17 +51,17 @@ export const prisma = new PrismaClient({
       break
       case 'DELETE':
   try {
-    const book = await prisma.books.delete({ where: { id: Number(id) } })
-    if (book) {
+    const customer = await prisma.customer.delete({ where: { id: Number(id) } })
+    if (customer) {
       res.status(204).send('')
     } else {
-      res.status(404).json({ message: `Book with ID ${id} not found` })
+      res.status(404).json({ message: `Customer with ID ${id} not found` })
     }
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Internal server error' })
   }finally {
-    await prisma.$disconnect() // Disconnect the prisma client after each request
+    await prisma.$disconnect() 
   }
   break;
       }}
